@@ -31,7 +31,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #ifndef OPENDETECTION_SCENE_H
 #define OPENDETECTION_SCENE_H
 
-//#include <opencv2/core/core.hpp>
 #include <opencv2/core/types.hpp>
 #include <iostream>
 #include <opencv2/imgcodecs.hpp>
@@ -41,7 +40,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 namespace od
 {
-  /** \brief Base class for Scenes. This contains information about the scenes. Scenes can be image scenes or point cloud scenes
+  /** \brief Base class for Scenes. This contains information about the scenes. Scenes can be image scenes or point cloud scenes.
    *
    * \author Kripasindhu Sarkar
    *
@@ -113,8 +112,8 @@ namespace od
     }
 
   protected:
-    cv::Mat cvimage_;
 
+    cv::Mat cvimage_;
     std::vector<cv::KeyPoint> keypoints_;
     cv::Mat descriptors_;
     bool is_trained_;
@@ -166,9 +165,14 @@ namespace od
       ODScenePointCloud::point_cloud_ = point_cloud_;
     }
 
-    void * getData() { return (void *)point_cloud_.get(); }
+    void * getData() 
+    {
+      return (void *)point_cloud_.get();
+    }
+
   protected:
     PointCloudPtr point_cloud_;
+
   };
 }
 
