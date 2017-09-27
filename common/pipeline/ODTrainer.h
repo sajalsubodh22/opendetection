@@ -31,13 +31,11 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #ifndef OPENDETECTION_TRAINER_H
 #define OPENDETECTION_TRAINER_H
 
-#include<iostream>
+#include <iostream>
 #include <boost/filesystem.hpp>
 #include <boost/algorithm/string.hpp>
-
 #include "ODAlgorithmBase.h"
 #include "ObjectDetector.h"
-
 
 namespace bf = boost::filesystem;
 
