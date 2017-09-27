@@ -42,8 +42,9 @@ namespace od
 {
   /** \brief The main detector class; all special Detectors derives from this.
    *
-   * Provides interface for two important function detect() and detectOmni(). detectOmni() performs a detection/recognition on the entire scene (unsegmented and unprocessed)
-   * and provides information about the detection as well as its exact location. detect() takes an 'object candidate' or a segmented/processed scene as an input and identifies if the entire scene is a detection.
+   * Provides interface for two important function detect() and detectOmni().
+   * detectOmni() performs a detection/recognition on the entire scene (unsegmented and unprocessed) and provides information about the detection as well as its exact location.
+   * detect() takes an 'object candidate' or a segmented/processed scene as an input and identifies if the entire scene is a detection.
    *
    * \author Kripasindhu Sarkar
    *
