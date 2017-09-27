@@ -47,8 +47,8 @@ namespace od
 
   /** \brief The base class of all the detection.
    *
-   * This is the base class of all the detection classes containing the detection information. All the ODDetector s return a collection of this class (in the form of ODDetections).
-   * Supports two modes: recognition (with type OD_DETECTION_RECOG) and classification (with type OD_DETECTION_CLASS). Along with the type, ODDetector sets an ID to identify what class or what instance of recognition is detected/recognied.
+   * This is the base class of all the detection classes containing the detection information. All the ODDetectors return a collection of this class (in the form of ODDetections).
+   * It supports two modes: recognition (with type OD_DETECTION_RECOG) and classification (with type OD_DETECTION_CLASS). Along with the type, ODDetector sets an ID to identify what class or what instance of recognition is detected/recognied.
    *
    * \author Kripasindhu Sarkar
    *
@@ -57,14 +57,12 @@ namespace od
   {
   public:
 
-
     OD_DEFINE_ENUM_WITH_STRING_CONVERSIONS(DetectionType, (OD_DETECTION_RECOG)(OD_DETECTION_CLASS)(OD_DETECTION_NULL))
 
     virtual ~ODDetection()
     { }
 
-    ODDetection(DetectionType const &type_ = OD_DETECTION_NULL, std::string const &id_ = "", double confidence_ = 1) : type_(type_), id_(id_),
-                                                                                     confidence_(confidence_)
+    ODDetection(DetectionType const &type_ = OD_DETECTION_NULL, std::string const &id_ = "", double confidence_ = 1) : type_(type_), id_(id_), confidence_(confidence_)
     { }
 
     void printSelf()
@@ -101,8 +99,6 @@ namespace od
       return confidence_;
     }
 
-    /** \brief Get/Set the confidence of the detection. ODDetector can use this to provide confidence amnong several detections.
-      */
     void setConfidence(double confidence_)
     {
       ODDetection::confidence_ = confidence_;
@@ -123,6 +119,8 @@ namespace od
   {
   public:
 
+    /** \brief Making base class destructor virtual guarantees that the object of derived class is destructed properly.
+      */
     virtual ~ODDetection2D()
     { }
 
@@ -161,7 +159,6 @@ namespace od
       ODDetection2D::metainfo_image_ = metainfo_image_;
     }
 
-
     Eigen::Vector3d location_2d_;
     cv::Rect bounding_box_2d_;
     cv::Mat metainfo_image_;
@@ -175,6 +172,9 @@ namespace od
   class ODDetection3D : public virtual ODDetection
   {
   public:
+
+    /** \brief Making base class destructor virtual guarantees that the object of derived class is destructed properly.
+      */
     virtual ~ODDetection3D()
     { }
 
@@ -187,6 +187,7 @@ namespace od
     {
       ODDetection3D::location_3d_ = location_;
     }
+
     void setLocation(cv::Mat const &location_)
     {
       cv::cv2eigen(location_, this->location_3d_);
@@ -201,6 +202,7 @@ namespace od
     {
       ODDetection3D::orientation_ = pose_;
     }
+
     void setPose(cv::Mat const & pose_cv)
     {
       this->orientation_ = Eigen::Map<Eigen::Matrix3d>(pose_cv.clone().ptr<double>());
@@ -256,15 +258,6 @@ namespace od
     double scale_;
     cv::Mat metainfo_image_;
     typename pcl::PointCloud<pcl::PointXYZ>::Ptr metainfo_cluster_;
-  };
-
-  /** \brief Detection in 2D with complete information.
-  *
-  * \author Kripasindhu Sarkar
-  *
-  */
-  class ODDetectionComplete: public ODDetection2D, public ODDetection3D
-  {
   };
 
   /** \brief The container class for ODDetection
@@ -330,9 +323,7 @@ namespace od
   };
 
 
-
-
-/** \brief The container class for ODDetection2D returned by ODDetector2D
+  /** \brief The container class for ODDetection2D returned by ODDetector2D
   *
   * \author Kripasindhu Sarkar
   *
@@ -378,41 +369,8 @@ namespace od
   {
   public:
 
-    /*ODSceneImage renderMetainfo(ODSceneImage input)
-    {
-      //picking up random colors for different detection algorithm, if exist
-      std::map<std::string, cv::Scalar> color_map;
-      for(int i = 0; i < detections_.size(); i++)
-      {
-        if(color_map.find(detections_[i]->getId()) == color_map.end())
-          color_map[detections_[i]->getId()] = CV_RGB(rand()%255, rand()%255, rand()%255);
-      }
-
-      cv::Mat image = input.getCVImage().clone();
-      for(int i = 0; i < detections_.size(); i++)
-      {
-        ODDetections3D * detection = dynamic_cast<ODDetections3D *>(detections_[i]);
-        cv::rectangle(image, detection->bounding_box_2d_, color_map[detections_[i]->getId()], 2);
-      }
-      return ODSceneImage(image);
-    }*/
-
-
     ODDetection3D * operator[](int i) { return dynamic_cast<ODDetection3D *>(detections_[i]); }
     ODDetection3D * at(int i) { return dynamic_cast<ODDetection3D *>(detections_[i]); }
-  };
-
-  /** \brief The container class for ODDetectionComplete returned by ODDetector2DComplete
- *
- * \author Kripasindhu Sarkar
- *
- */
-  class ODDetectionsComplete: public ODDetections
-  {
-  public:
-
-    ODDetectionComplete * operator[](int i) { return dynamic_cast<ODDetectionComplete *>(detections_[i]); }
-    ODDetectionComplete * at(int i) { return dynamic_cast <ODDetectionComplete *>(detections_[i]); }
   };
 
 }
